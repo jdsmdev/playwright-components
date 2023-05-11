@@ -1,0 +1,41 @@
+{
+  "name": "playwright-components",
+  "version": "0.1.2",
+  "description": "Set of page object components to help in complex playwright projects",
+  "keywords": [
+    "playwright",
+    "test",
+    "qa",
+    "automation"
+  ],
+  "author": "jdsmdev <jorge.soaresmoniz@hitachivantara.com>",
+  "homepage": "https://github.com/jdsmdev/npm-packages#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdsmdev/npm-packages.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "npm-run-all --parallel lint:*",
+    "lint:types": "tsc --noEmit",
+    "lint:eslint": "eslint --color --cache src",
+    "lint:prettier": "prettier --check src",
+    "prepublish": "npm run build",
+    "test": "jest --coverage"
+  },
+  "bugs": {
+    "url": "https://github.com/jdsmdev/npm-packages/issues"
+  },
+  "dependencies": {
+    "playwright": "^1.33.0"
+  }
+}
