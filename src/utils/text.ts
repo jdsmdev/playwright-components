@@ -8,3 +8,6 @@ export const toCamelCase = (phrase: string): string => {
     )
     .join("");
 };
+
+export const toPhrase = (camelCase: string): string =>
+  camelCase.replace(/([A-Z])/g, " $1");

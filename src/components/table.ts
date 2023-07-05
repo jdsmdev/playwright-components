@@ -4,7 +4,7 @@ import { toCamelCase } from "../utils";
 export class TableComponent {
   readonly page: Page;
   readonly rows: Locator;
-  readonly headerRow: Locator;
+  readonly tableHeader: Locator;
   readonly bodyRows: Locator;
   readonly showHowMany: Locator;
   readonly tooltip: Locator;
@@ -13,7 +13,7 @@ export class TableComponent {
   constructor(root: Page | Locator) {
     this.page = "page" in root ? root.page() : root;
     this.rows = root.getByRole("row");
-    this.headerRow = this.rows.nth(0);
+    this.tableHeader = this.rows.nth(0);
     this.bodyRows = root.locator("tbody").getByRole("row");
     this.showHowMany = this.page.getByRole("combobox", {
       name: "Select how many to display",
@@ -22,6 +22,14 @@ export class TableComponent {
     this.currentPage = this.page.getByRole("spinbutton", {
       name: "Current page",
     });
+  }
+
+  getColumnHeader(text: string): Locator {
+    return this.tableHeader.getByRole("columnheader", { name: text });
+  }
+
+  async sortBy(column: string) {
+    await this.getColumnHeader(column).click();
   }
 
   async getBodyRow(text: string): Promise<Locator> {
@@ -43,7 +51,7 @@ export class TableComponent {
   }
 
   async getBodyRowsAsMaps(): Promise<Map<string, string>[]> {
-    const columns: string[] = await this.headerRow
+    const columns: string[] = await this.tableHeader
       .getByRole("columnheader")
       .allTextContents();
     const cells: string[][] = await this.getBodyCellTexts();
@@ -54,6 +62,23 @@ export class TableComponent {
         return prev;
       }, new Map<string, string>())
     );
+  }
+
+  async getBodyRowsAs<T extends Record<string, string>>(): Promise<T[]> {
+    const columns: string[] = await this.tableHeader
+      .getByRole("columnheader")
+      .allTextContents();
+    const cells: string[][] = await this.getBodyCellTexts();
+
+    const objs: T[] = [];
+
+    cells.forEach((row: string[]) => {
+      const obj: Record<string, string> = {};
+      columns.forEach((col, i) => (obj[toCamelCase(col)] = row[i]));
+      objs.push(obj as T);
+    });
+
+    return objs;
   }
 
   async howManyRows(): Promise<number> {
