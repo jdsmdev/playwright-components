@@ -5,6 +5,7 @@ export class TableComponent {
   readonly page: Page;
   readonly rows: Locator;
   readonly tableHeader: Locator;
+  readonly tableBody: Locator;
   readonly bodyRows: Locator;
   readonly showHowMany: Locator;
   readonly tooltip: Locator;
@@ -14,13 +15,14 @@ export class TableComponent {
     this.page = "page" in root ? root.page() : root;
     this.rows = root.getByRole("row");
     this.tableHeader = this.rows.nth(0);
+    this.tableBody = root.locator("tbody");
     this.bodyRows = root.locator("tbody").getByRole("row");
     this.showHowMany = this.page.getByRole("combobox", {
-      name: "Select how many to display",
+      name: "select how many to display",
     });
     this.tooltip = this.page.getByRole("tooltip");
     this.currentPage = this.page.getByRole("spinbutton", {
-      name: "Current page",
+      name: "current page",
     });
   }
 
@@ -33,14 +35,7 @@ export class TableComponent {
   }
 
   async getBodyRow(text: string): Promise<Locator> {
-    const rowWithText = (await this.bodyRows.all()).find(
-      async (row) => (await row.textContent()) === text
-    );
-
-    if (!rowWithText)
-      throw new Error(`No row found on publications table with text: ${text}`);
-
-    return rowWithText;
+    return this.page.locator(`tr:has-text("${text}")`);
   }
 
   async getBodyCellTexts(): Promise<string[][]> {
