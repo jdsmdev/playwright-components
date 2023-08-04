@@ -1,6 +1,6 @@
 {
   "name": "playwright-components",
-  "version": "0.4.2",
+  "version": "0.5.11",
   "description": "Set of page object components to help in complex playwright projects",
   "keywords": [
     "playwright",

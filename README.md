@@ -1,6 +1,6 @@
 # `playwright-components`
 
-> TODO: description
+Set of page object components to help in complex playwright projects
 
 ## Usage
 
