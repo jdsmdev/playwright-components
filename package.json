@@ -1,15 +1,16 @@
 {
   "name": "playwright-components",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Set of page object components to help in complex playwright projects",
   "keywords": [
-    "playwright",
-    "test",
+    "accessibility",
+    "automation",
     "qa",
-    "automation"
+    "playwright",
+    "test"
   ],
-  "author": "jdsmdev <jorge.soaresmoniz@hitachivantara.com>",
-  "homepage": "https://github.com/jdsmdev/npm-packages#readme",
+  "author": "jdsmdev <jdsm@ua.pt>",
+  "homepage": "https://github.com/jdsmdev/playwright-components#readme",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -21,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jdsmdev/npm-packages.git"
+    "url": "git+https://github.com/jdsmdev/playwright-components.git"
   },
   "scripts": {
     "build": "tsc",
@@ -30,12 +31,22 @@
     "lint:eslint": "eslint --color --cache src",
     "lint:prettier": "prettier --check src",
     "prepublish": "npm run build",
-    "test": "jest --coverage"
+    "test": "echo \"no tests, solve this!\" exit 0"
   },
   "bugs": {
-    "url": "https://github.com/jdsmdev/npm-packages/issues"
+    "url": "https://github.com/jdsmdev/playwright-components/issues"
   },
   "dependencies": {
     "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
   }
 }

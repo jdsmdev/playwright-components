@@ -41,7 +41,7 @@ export class TableComponent {
   async getBodyCellTexts(): Promise<string[][]> {
     const rows: Locator[] = await this.bodyRows.all();
     return Promise.all(
-      rows.map(async (row) => row.getByRole("cell").allTextContents())
+      rows.map(async (row) => row.getByRole("cell").allTextContents()),
     );
   }
 
@@ -55,7 +55,7 @@ export class TableComponent {
       columns.reduce((prev, curr, i) => {
         prev.set(toCamelCase(curr), row[i]);
         return prev;
-      }, new Map<string, string>())
+      }, new Map<string, string>()),
     );
   }
 
