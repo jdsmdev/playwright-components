@@ -1,6 +1,6 @@
 {
   "name": "playwright-components",
-  "version": "0.5.11",
+  "version": "0.7.0",
   "description": "Set of page object components to help in complex playwright projects",
   "keywords": [
     "playwright",
@@ -36,6 +36,6 @@
     "url": "https://github.com/jdsmdev/npm-packages/issues"
   },
   "dependencies": {
-    "playwright": "^1.33.0"
+    "playwright": "^1.40.0"
   }
 }

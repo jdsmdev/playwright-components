@@ -7,12 +7,14 @@ export type FillValue = string | string[] | boolean | undefined;
 
 export class FormComponent {
   readonly page: Page;
+  readonly root: Page | Locator;
   readonly submitButton: Locator;
   readonly cancelButton: Locator;
   readonly cancelLink: Locator;
 
   constructor(root: Page | Locator) {
     this.page = "page" in root ? root.page() : root;
+    this.root = root;
     this.submitButton = root.locator("button[type='submit']");
     this.cancelButton = root.getByRole("button", { name: "cancel" });
     this.cancelLink = root.getByRole("link", { name: "cancel" });
@@ -38,7 +40,9 @@ export class FormComponent {
     if (typeof value === "boolean") {
       await this.fillCheckbox(field, value);
     } else if (typeof value === "string") {
-      const input = this.page.getByLabel(toPhrase(field)).first();
+      const input = this.root
+        .getByLabel(new RegExp(`^${toPhrase(field)}\\*?$`, "i"))
+        .first();
       const role = await input.getAttribute("role");
 
       if (role === "combobox") {
@@ -47,7 +51,7 @@ export class FormComponent {
         await this.fillText(field, value);
       }
     } else {
-      const input = this.page.getByLabel(toPhrase(field)).first();
+      const input = this.root.getByLabel(toPhrase(field)).first();
       const type = await input.getAttribute("type");
 
       if (type === "file") {
@@ -57,28 +61,29 @@ export class FormComponent {
   }
 
   async fillCheckbox(field: string, value: boolean) {
-    await this.page
+    await this.root
       .getByRole("checkbox", { name: toPhrase(field) })
       .setChecked(value);
   }
 
   async fillCombobox(field: string, value: string) {
-    await this.page.getByRole("combobox", { name: toPhrase(field) }).click();
+    const combobox = this.root.getByRole("combobox", { name: toPhrase(field) });
+    await combobox.click();
     await this.page.getByRole("option", { name: value }).click();
   }
 
   async fillFile(field: string, value: string[]) {
-    await this.page.getByLabel(toPhrase(field)).setInputFiles(value);
+    await this.root.getByLabel(toPhrase(field)).setInputFiles(value);
   }
 
   async fillText(field: string, value: string) {
-    await this.page.getByLabel(toPhrase(field)).fill(value);
+    await this.root.getByLabel(toPhrase(field)).fill(value);
   }
 
   async getErrorMessage(field: string): Promise<string | undefined> {
-    const input = this.page.getByLabel(toPhrase(field)).first();
+    const input = this.root.getByLabel(toPhrase(field)).first();
     const errorId = await input.getAttribute("aria-errormessage");
-    const error = this.page.locator(`#${errorId}`);
+    const error = this.root.locator(`#${errorId}`);
 
     if (!(await error.isVisible())) {
       return undefined;
