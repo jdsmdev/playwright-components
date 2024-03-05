@@ -34,7 +34,7 @@ export class TableComponent {
     await this.getColumnHeader(column).click();
   }
 
-  async getBodyRow(text: string): Promise<Locator> {
+  getBodyRow(text: string): Locator {
     return this.page.locator(`tr:has-text("${text}")`);
   }
 
@@ -61,15 +61,18 @@ export class TableComponent {
 
   async getBodyRowsAs<T extends Record<string, string>>(): Promise<T[]> {
     const columns: string[] = await this.tableHeader
-      .getByRole("columnheader")
+      .getByRole("columnheader", { includeHidden: true })
       .allTextContents();
+
     const cells: string[][] = await this.getBodyCellTexts();
 
     const objs: T[] = [];
 
     cells.forEach((row: string[]) => {
       const obj: Record<string, string> = {};
-      columns.forEach((col, i) => (obj[toCamelCase(col)] = row[i]));
+      columns.forEach((col, i) => {
+        if (col.trim().length > 0) obj[toCamelCase(col)] = row[i];
+      });
       objs.push(obj as T);
     });
 
@@ -89,7 +92,23 @@ export class TableComponent {
   }
 
   async getCurrentPage(): Promise<number> {
-    return Number(await this.currentPage.textContent());
+    return Number(await this.currentPage.inputValue());
+  }
+
+  getFirstPage(): Locator {
+    return this.getPageButton("First");
+  }
+
+  getPrevPage(): Locator {
+    return this.getPageButton("Previous");
+  }
+
+  getNextPage(): Locator {
+    return this.getPageButton("Next");
+  }
+
+  getLastPage(): Locator {
+    return this.getPageButton("Last");
   }
 
   async goToFirstPage() {
@@ -108,7 +127,11 @@ export class TableComponent {
     await this.clickPageButton("Last");
   }
 
+  private getPageButton(page: string): Locator {
+    return this.page.getByRole("button", { name: `${page} Page` });
+  }
+
   private async clickPageButton(page: string) {
-    await this.page.getByRole("button", { name: `${page} Page` }).click();
+    await this.getPageButton(page).click();
   }
 }
