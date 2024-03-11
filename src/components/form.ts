@@ -53,16 +53,13 @@ export class FormComponent {
       : this.fillAny(field, value));
   }
 
-  async fillAny(field: string, value: FillValue) {
+  async fillAny(field: string, value: Exclude<FillValue, undefined>) {
     if (typeof value === "boolean") {
       await this.fillCheckbox(field, value);
     } else if (typeof value === "number") {
       await this.fillText(field, value);
     } else if (typeof value === "string") {
-      const input = this.root
-        .getByLabel(new RegExp(`^${toPhrase(field)}\\*?$`, "i"))
-        .first();
-      const role = await input.getAttribute("role");
+      const role = await this.getInputByLabel(field).getAttribute("role");
 
       if (role === "combobox") {
         await this.fillCombobox(field, value);
@@ -70,8 +67,7 @@ export class FormComponent {
         await this.fillText(field, value);
       }
     } else {
-      const input = this.root.getByLabel(toPhrase(field)).first();
-      const type = await input.getAttribute("type");
+      const type = await this.getInputByLabel(field).getAttribute("type");
 
       if (type === "file") {
         await this.fillFile(field, value);
@@ -92,22 +88,33 @@ export class FormComponent {
   }
 
   async fillFile(field: string, value: string[]) {
-    await this.root.getByLabel(toPhrase(field)).setInputFiles(value);
+    await this.getInputByLabel(field).setInputFiles(value);
   }
 
   async fillText(field: string, value: string | number) {
-    await this.root.getByLabel(toPhrase(field)).fill("" + value);
+    await this.getInputByLabel(field).fill("" + value);
   }
 
   async getErrorMessage(field: string): Promise<string | undefined> {
-    const input = this.root.getByLabel(toPhrase(field)).first();
-    const errorId = await input.getAttribute("aria-errormessage");
+    const errorId =
+      await this.getInputByLabel(field).getAttribute("aria-errormessage");
     const error = this.root.locator(`#${errorId}`);
 
     if (!(await error.isVisible())) {
       return undefined;
     }
 
-    return await error.textContent();
+    return (await error.textContent()) || undefined;
+  }
+
+  private getInputByLabel(field: string) {
+    return this.root
+      .getByLabel(
+        new RegExp(
+          `^${field.includes(" ") ? field : toPhrase(field)}\\s*\\*?$`,
+          "i",
+        ),
+      )
+      .first();
   }
 }
