@@ -1,32 +1,21 @@
-# `playwright-components`
+# Playwright Components
 
-Set of page object components to help in complex playwright projects
+[![npm package](https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/320px-Npm-logo.svg.png)](https://www.npmjs.com/package/playwright-components)
 
-## Usage
+Set of page object components to help in complex playwright projects.
 
+These components assume that you're using a page object / component object approach to you web testing.
+
+It also assumes that your web UI under test abliges to the accessibility best practices from [WCAG 2](https://www.w3.org/WAI/standards-guidelines/wcag)
+
+## Installation
+
+On a project only for testing
 ```
-import { Locator, Page } from "@playwright/test";
-import { TableComponent } from "playwright-components";
+npm i playwright-components
+```
 
-export class MyPage {
-  readonly page: Page;
-  readonly myButton: Locator;
-  readonly myTable: TableComponent;
-
-  constructor(page: Page) {
-    this.page = page;
-    this.myButton = page.getByRole("button", { name: "My Button" });
-    this.table = new TableComponent(page.getByRole("table"));
-  }
-
-  async goto() {
-    await this.page.goto("/my-page");
-  }
-
-  async isFileVisible(fileName: string): Promise<boolean> {
-    return !!(await this.table.getBodyRowsAsMaps()).find(
-      (row) => row.get("fileName") === fileName,
-    );
-  }
-}
+On project with tests
+```
+npm i -D playwright-components
 ```
