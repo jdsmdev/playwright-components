@@ -27,10 +27,11 @@
   "scripts": {
     "build": "tsc",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:types": "tsc --noEmit",
     "lint:eslint": "eslint --color --cache src",
     "lint:prettier": "prettier --check src",
+    "lint:types": "tsc --noEmit",
     "prepublish": "npm run build",
+    "release": "semantic-release",
     "test": "echo \"no tests, solve this!\" exit 0"
   },
   "bugs": {
@@ -50,6 +51,7 @@
     "eslint-plugin-tsdoc": "^0.2.17",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
+    "semantic-release": "^23.0.2",
     "typescript": "^5.3.3"
   }
 }
