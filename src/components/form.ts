@@ -3,7 +3,7 @@ import { toPhrase } from "../utils";
 
 export type Entity = { [key: string]: FillValue | Entity };
 
-export type FillValue = string | string[] | boolean | undefined;
+export type FillValue = string | string[] | number | boolean | undefined;
 
 /**
  * Page component that Represents a form.
@@ -56,6 +56,8 @@ export class FormComponent {
   async fillAny(field: string, value: FillValue) {
     if (typeof value === "boolean") {
       await this.fillCheckbox(field, value);
+    } else if (typeof value === "number") {
+      await this.fillText(field, value);
     } else if (typeof value === "string") {
       const input = this.root
         .getByLabel(new RegExp(`^${toPhrase(field)}\\*?$`, "i"))
@@ -93,8 +95,8 @@ export class FormComponent {
     await this.root.getByLabel(toPhrase(field)).setInputFiles(value);
   }
 
-  async fillText(field: string, value: string) {
-    await this.root.getByLabel(toPhrase(field)).fill(value);
+  async fillText(field: string, value: string | number) {
+    await this.root.getByLabel(toPhrase(field)).fill("" + value);
   }
 
   async getErrorMessage(field: string): Promise<string | undefined> {
