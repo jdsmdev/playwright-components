@@ -11,8 +11,11 @@ permissions:
   pull-requests: write # to be able to comment on released pull requests
   id-token: write # to enable use of OIDC for npm provenance
 
+env:
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
 jobs:
-  build:
+  build-test-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
