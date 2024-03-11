@@ -1,6 +1,24 @@
 import { Locator, Page } from "playwright";
 import { toCamelCase } from "../utils";
 
+/**
+ * Page component that Represents a table.
+ *
+ * @example
+ * ```
+ * export class MyPage {
+ *  readonly myTable: TableComponent;
+ *
+ *  constructor(page: Page) {
+ *    this.myTable = new TableComponent(page.getByRole("table"));
+ *  }
+ * }
+ *
+ * const myPage = new MyPage(page);
+ * const myUsers: User[] = await myPage.myTable.getBodyRowsAs();
+ * expect(myUsers).toHaveLength(5);
+ * ```
+ */
 export class TableComponent {
   readonly page: Page;
   readonly rows: Locator;

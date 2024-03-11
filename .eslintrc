@@ -1,27 +1,28 @@
 {
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
     "plugin:import/errors",
-    "plugin:import/warnings"
-  ],
-  "plugins": [
-    "import",
+    "plugin:import/warnings",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
+  "ignorePatterns": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "plugins": [
+    "eslint-plugin-tsdoc",
+    "import",
+    "prettier"
+  ],
   "rules": {
-    "linebreak-style": "off", // Doesn't play nicely with Windows.
+    "default-param-last": "off",
     "import/extensions": [
       "warn",
       "never"
     ],
-    "import/prefer-default-export": "off",
     "import/no-cycle": "off",
     "import/no-unresolved": "off", // doesn't play nicely with TS resolution
     "import/order": [
@@ -43,8 +44,16 @@
         }
       }
     ],
+    "import/prefer-default-export": "off",
+    "linebreak-style": "off", // Doesn't play nicely with Windows.
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "no-plusplus": "off",
     "no-restricted-exports": "off",
-    "default-param-last": "off",
     "prefer-regex-literals": [
       "warn",
       {
@@ -57,19 +66,12 @@
         "endOfLine": "auto"
       }
     ],
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "tsdoc/syntax": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "no-plusplus": "off",
-    "no-param-reassign": [
-      "error",
-      {
-        "props": false
-      }
-    ]
-  },
-  "ignorePatterns": []
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": "warn"
+  }
 }
