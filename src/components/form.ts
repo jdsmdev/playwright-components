@@ -5,6 +5,23 @@ export type Entity = { [key: string]: FillValue | Entity };
 
 export type FillValue = string | string[] | boolean | undefined;
 
+/**
+ * Page component that Represents a form.
+ *
+ * @example
+ * ```
+ * export class MyPage {
+ *  readonly myForm: FormComponent;
+ *
+ *  constructor(page: Page) {
+ *    this.myForm = new FormComponent(page.locator("form"));
+ *  }
+ * }
+ *
+ * const myPage = new MyPage(page);
+ * await myPage.myForm.fillAll({ name: "Angie", gender: "Female" });
+ * ```
+ */
 export class FormComponent {
   readonly page: Page;
   readonly root: Page | Locator;
