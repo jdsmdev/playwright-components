@@ -77,12 +77,14 @@ export class FormComponent {
 
   async fillCheckbox(field: string, value: boolean) {
     await this.root
-      .getByRole("checkbox", { name: toPhrase(field) })
+      .getByRole("checkbox", { name: this.getLabelRegExp(field) })
       .setChecked(value);
   }
 
   async fillCombobox(field: string, value: string) {
-    const combobox = this.root.getByRole("combobox", { name: toPhrase(field) });
+    const combobox = this.root.getByRole("combobox", {
+      name: this.getLabelRegExp(field),
+    });
     await combobox.click();
     await this.page.getByRole("option", { name: value }).click();
   }
@@ -108,13 +110,13 @@ export class FormComponent {
   }
 
   private getInputByLabel(field: string) {
-    return this.root
-      .getByLabel(
-        new RegExp(
-          `^${field.includes(" ") ? field : toPhrase(field)}\\s*\\*?$`,
-          "i",
-        ),
-      )
-      .first();
+    return this.root.getByLabel(this.getLabelRegExp(field)).first();
+  }
+
+  private getLabelRegExp(field: string) {
+    return new RegExp(
+      `^${field.includes(" ") ? field : toPhrase(field)}\\s*\\*?$`,
+      "i",
+    );
   }
 }

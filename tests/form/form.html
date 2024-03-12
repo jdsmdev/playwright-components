@@ -1,6 +1,23 @@
 <form>
   <h4>Form</h4>
-  <button type="submit">Submit</button>
-  <a href="#">Cancel</a>
-  <button>Cancel</button>
+  <div>
+    <div>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" aria-errormessage="name-error" />
+      <p id="name-error">Name is empty!</p>
+    </div>
+    <div>
+      <label for="age">Age</label>
+      <input type="number" id="age" name="age" />
+    </div>
+    <div>
+      <input type="checkbox" id="drive" name="drive" />
+      <label for="drive">I Can Drive</label>
+    </div>
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+    <a href="#">Cancel</a>
+    <button>Cancel</button>
+  </div>
 </form>
