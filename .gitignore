@@ -1,5 +1,11 @@
+.eslintcache
+.nyc_output/
 node_modules/
 coverage
 lib
-.eslintcache
 *.tgz
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.DS_Store

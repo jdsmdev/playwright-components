@@ -23,8 +23,6 @@ export class TableComponent {
   readonly page: Page;
   readonly rows: Locator;
   readonly tableHeader: Locator;
-  readonly tableBody: Locator;
-  readonly bodyRows: Locator;
   readonly showHowMany: Locator;
   readonly tooltip: Locator;
   readonly currentPage: Locator;
@@ -33,8 +31,6 @@ export class TableComponent {
     this.page = "page" in root ? root.page() : root;
     this.rows = root.getByRole("row");
     this.tableHeader = this.rows.nth(0);
-    this.tableBody = root.locator("tbody");
-    this.bodyRows = root.locator("tbody").getByRole("row");
     this.showHowMany = this.page.getByRole("combobox", {
       name: "select how many to display",
     });
@@ -53,11 +49,13 @@ export class TableComponent {
   }
 
   getBodyRow(text: string): Locator {
-    return this.page.locator(`tr:has-text("${text}")`);
+    return this.page.getByRole("row", { name: text });
   }
 
   async getBodyCellTexts(): Promise<string[][]> {
-    const rows: Locator[] = await this.bodyRows.all();
+    const rows: Locator[] = await this.rows.all();
+    rows.shift();
+
     return Promise.all(
       rows.map(async (row) => row.getByRole("cell").allTextContents()),
     );
