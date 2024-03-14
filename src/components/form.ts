@@ -37,12 +37,45 @@ export class FormComponent {
     this.cancelLink = root.getByRole("link", { name: "cancel" });
   }
 
+  /**
+   * Fills all form inputs of the given entity.
+   *
+   * @param entity - An object of any depth with the field: value pairs of the form inputs.
+   *
+   * @example
+   * ```
+   * // fills "Name" text input, "Age" text or number input, "Can Drive" checkbox input.
+   * await myForm.fillAll({ name: "Angie", canDrive: true });
+   * ```
+   * @example
+   * ```
+   * // fills "First Name" text input, "Last Name" text input, "Age" text or number input.
+   * await myForm.fillAll({ "Name": { "First Name": "Jane", "Last Name": "Doh" }, "Age": 25 });
+   * ```
+   */
   async fillAll(entity: Entity) {
     for (const key of Object.keys(entity)) {
       await this.fillOne(key, entity[key]);
     }
   }
 
+  /**
+   * Fills one form input.
+   *
+   * @param field - The form field to fill in "camelCaseFormat" or "Phrase Format".
+   * @param value - An object of any depth with value to fill in or a field: value pairs of the form inputs.
+   *
+   * @example
+   * ```
+   * // fills "Name" text input.
+   * await myForm.fillOne("name", "Angie");
+   * ```
+   * @example
+   * ```
+   * // Doesn't fill anything.
+   * await myForm.fillOne("age", undefined);
+   * ```
+   */
   async fillOne(field: string, value?: FillValue | Entity) {
     if (!value) {
       return;

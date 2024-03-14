@@ -35,6 +35,17 @@ export class DialogComponent {
     this.cancelButton = root.getByRole("button", { name: "cancel" });
   }
 
+  /**
+   * Clicks the button in this dialog with the given acessible name.
+   *
+   * @param name - The acessible name of the button. (case insencitive)
+   *
+   * @example
+   * ```
+   * // clicks the dialog button with acessible name "create".
+   * await myDialog.click("create");
+   * ```
+   */
   async click(name: string) {
     await this.root.getByRole("button", { name }).click();
   }
