@@ -40,6 +40,16 @@ export class TableComponent {
     });
   }
 
+  /**
+   * Returns the Locator for a column header.
+   *
+   * @param text - The column header text or acessible name. (case insencitive)
+   *
+   * @example
+   * ```
+   * const myColumnHeader: Locator = myTable.getColumnHeader("name");
+   * ```
+   */
   getColumnHeader(text: string): Locator {
     return this.tableHeader.getByRole("columnheader", { name: text });
   }
@@ -48,6 +58,16 @@ export class TableComponent {
     await this.getColumnHeader(column).click();
   }
 
+  /**
+   * Returns the Locator for a table body row.
+   *
+   * @param text - The partial row text or acessible name. (case insencitive)
+   *
+   * @example
+   * ```
+   * const myRow: Locator = myTable.getBodyRow("jane doh");
+   * ```
+   */
   getBodyRow(text: string): Locator {
     return this.page.getByRole("row", { name: text });
   }
@@ -57,7 +77,11 @@ export class TableComponent {
     rows.shift();
 
     return Promise.all(
-      rows.map(async (row) => row.getByRole("cell").allTextContents()),
+      rows.map(async (row) =>
+        (await row.getByRole("cell").allTextContents()).map((cell) =>
+          cell.trim(),
+        ),
+      ),
     );
   }
 
