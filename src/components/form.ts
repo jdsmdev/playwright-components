@@ -115,11 +115,19 @@ export class FormComponent {
   }
 
   async fillCombobox(field: string, value: string) {
+    const labelExp = this.getLabelRegExp(field);
+
     const combobox = this.root.getByRole("combobox", {
-      name: this.getLabelRegExp(field),
+      name: labelExp,
     });
     await combobox.click();
-    await this.page.getByRole("option", { name: value }).click();
+
+    const optionsList = this.page.getByLabel(labelExp).last();
+    const role = await optionsList.getAttribute("role");
+
+    await optionsList
+      .getByRole(this.optionRoleFor(role), { name: value })
+      .click();
   }
 
   async fillFile(field: string, value: string[]) {
@@ -151,5 +159,10 @@ export class FormComponent {
       `^${field.includes(" ") ? field : toPhrase(field)}\\s*\\*?$`,
       "i",
     );
+  }
+
+  private optionRoleFor(role: string) {
+    if (role === "tree") return "treeitem";
+    return "option";
   }
 }
