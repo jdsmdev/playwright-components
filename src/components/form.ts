@@ -92,7 +92,8 @@ export class FormComponent {
     } else if (typeof value === "number") {
       await this.fillText(field, value);
     } else if (typeof value === "string") {
-      const role = await this.getInputByLabel(field).getAttribute("role");
+      const input = await this.getInputByLabelOrPlaceholder(field);
+      const role = await input.getAttribute("role");
 
       if (role === "combobox") {
         await this.fillCombobox(field, value);
@@ -100,7 +101,8 @@ export class FormComponent {
         await this.fillText(field, value);
       }
     } else {
-      const type = await this.getInputByLabel(field).getAttribute("type");
+      const input = await this.getInputByLabelOrPlaceholder(field);
+      const type = await input.getAttribute("type");
 
       if (type === "file") {
         await this.fillFile(field, value);
@@ -131,16 +133,18 @@ export class FormComponent {
   }
 
   async fillFile(field: string, value: string[]) {
-    await this.getInputByLabel(field).setInputFiles(value);
+    const input = await this.getInputByLabelOrPlaceholder(field);
+    await input.setInputFiles(value);
   }
 
   async fillText(field: string, value: string | number) {
-    await this.getInputByLabel(field).fill("" + value);
+    const input = await this.getInputByLabelOrPlaceholder(field);
+    await input.fill("" + value);
   }
 
   async getErrorMessage(field: string): Promise<string | undefined> {
-    const errorId =
-      await this.getInputByLabel(field).getAttribute("aria-errormessage");
+    const input = await this.getInputByLabelOrPlaceholder(field);
+    const errorId = await input.getAttribute("aria-errormessage");
     const error = this.root.locator(`#${errorId}`);
 
     if (!(await error.isVisible())) {
@@ -150,8 +154,14 @@ export class FormComponent {
     return (await error.textContent()) || undefined;
   }
 
-  private getInputByLabel(field: string) {
-    return this.root.getByLabel(this.getLabelRegExp(field)).first();
+  private async getInputByLabelOrPlaceholder(field: string): Promise<Locator> {
+    const inputByLabel = this.root.getByLabel(this.getLabelRegExp(field));
+
+    if ((await inputByLabel.count()) > 0) {
+      return inputByLabel.first();
+    }
+
+    return this.root.getByPlaceholder(this.getLabelRegExp(field)).first();
   }
 
   private getLabelRegExp(field: string) {
