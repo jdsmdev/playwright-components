@@ -92,8 +92,7 @@ export class FormComponent {
     } else if (typeof value === "number") {
       await this.fillText(field, value);
     } else if (typeof value === "string") {
-      const input = await this.getInputByLabelOrPlaceholder(field);
-      const role = await input.getAttribute("role");
+      const role = await this.getInput(field).getAttribute("role");
 
       if (role === "combobox") {
         await this.fillCombobox(field, value);
@@ -101,8 +100,7 @@ export class FormComponent {
         await this.fillText(field, value);
       }
     } else {
-      const input = await this.getInputByLabelOrPlaceholder(field);
-      const type = await input.getAttribute("type");
+      const type = await this.getInput(field).getAttribute("type");
 
       if (type === "file") {
         await this.fillFile(field, value);
@@ -133,18 +131,16 @@ export class FormComponent {
   }
 
   async fillFile(field: string, value: string[]) {
-    const input = await this.getInputByLabelOrPlaceholder(field);
-    await input.setInputFiles(value);
+    await this.getInput(field).setInputFiles(value);
   }
 
   async fillText(field: string, value: string | number) {
-    const input = await this.getInputByLabelOrPlaceholder(field);
-    await input.fill("" + value);
+    await this.getInput(field).fill("" + value);
   }
 
   async getErrorMessage(field: string): Promise<string | undefined> {
-    const input = await this.getInputByLabelOrPlaceholder(field);
-    const errorId = await input.getAttribute("aria-errormessage");
+    const errorId =
+      await this.getInput(field).getAttribute("aria-errormessage");
     const error = this.root.locator(`#${errorId}`);
 
     if (!(await error.isVisible())) {
@@ -154,14 +150,11 @@ export class FormComponent {
     return (await error.textContent()) || undefined;
   }
 
-  private async getInputByLabelOrPlaceholder(field: string): Promise<Locator> {
-    const inputByLabel = this.root.getByLabel(this.getLabelRegExp(field));
-
-    if ((await inputByLabel.count()) > 0) {
-      return inputByLabel.first();
-    }
-
-    return this.root.getByPlaceholder(this.getLabelRegExp(field)).first();
+  private getInput(field: string) {
+    return this.root
+      .getByLabel(this.getLabelRegExp(field))
+      .or(this.root.getByPlaceholder(this.getLabelRegExp(field)))
+      .first();
   }
 
   private getLabelRegExp(field: string) {
