@@ -56,12 +56,20 @@ test("should be able to fill checkbox input with phrase on form", async ({
 
 test("should be able to fill all inputs on form", async ({ formPage }) => {
   // WHEN
-  await formPage.form.fillAll({ name: "regie", age: "25", iCanDrive: false });
+  await formPage.form.fillAll({
+    name: "regie",
+    lastName: "santini",
+    age: "25",
+    iCanDrive: false,
+  });
 
   // THEN
   await expect(formPage.form.root.getByLabel("name")).toHaveValue("regie");
+  await expect(formPage.form.root.getByPlaceholder("last name")).toHaveValue(
+    "santini",
+  );
   await expect(formPage.form.root.getByLabel("age")).toHaveValue("25");
-  await expect(formPage.form.root.getByLabel("I Can Drive")).not.toBeChecked();
+  await expect(formPage.form.root.getByLabel("i can drive")).not.toBeChecked();
 });
 
 test("should be able to fill all inputs with depth on form", async ({
