@@ -7,7 +7,7 @@
     "noImplicitAny": true,
     "noLib": false,
     "outDir": "./lib",
-    "removeComments": true,
+    "removeComments": false,
     "sourceMap": true,
     "target": "es6",
     "lib": ["DOM", "es6"]
