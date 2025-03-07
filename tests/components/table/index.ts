@@ -1,5 +1,5 @@
 import { Page } from "playwright/test";
-import { TableComponent } from "../../src";
+import { TableComponent } from "../../../src";
 
 export class TablePage {
   readonly table: TableComponent;

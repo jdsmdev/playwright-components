@@ -1,7 +1,7 @@
 import { test, expect } from "..";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("tests/dialog/dialog.html");
+  await page.goto("tests/components/dialog/dialog.html");
 });
 
 test("should be able to close on dialog", async ({ dialogPage }) => {

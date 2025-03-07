@@ -1,5 +1,5 @@
 import { Page } from "playwright/test";
-import { FormComponent } from "../../src";
+import { FormComponent } from "../../../src";
 
 export class FormPage {
   readonly form: FormComponent;
