@@ -1,5 +1,5 @@
 import { Page } from "playwright/test";
-import { DialogComponent } from "../../src";
+import { DialogComponent } from "../../../src";
 
 export class DialogPage {
   readonly dialog: DialogComponent;

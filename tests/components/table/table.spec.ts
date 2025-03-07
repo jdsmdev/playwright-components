@@ -1,10 +1,10 @@
 import { test, expect } from "..";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("tests/table/table.html");
+  await page.goto("tests/components/table/table.html");
 });
 
-test("should be able to get coloumn header on table", async ({ tablePage }) => {
+test("should be able to get column header on table", async ({ tablePage }) => {
   // WHEN
   const header = tablePage.table.getColumnHeader("Header 1");
 
