@@ -38,7 +38,7 @@ export class DialogComponent {
   /**
    * Clicks the button in this dialog with the given acessible name.
    *
-   * @param name - The acessible name of the button. (case insencitive)
+   * @param name - The acessible name of the button. (case insensitive)
    *
    * @example
    * ```

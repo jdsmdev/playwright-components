@@ -33,6 +33,7 @@
     "lint:types": "tsc --noEmit",
     "prepublish": "npm run build",
     "release": "semantic-release",
+    "start:http2": "node tests/fixtures/http2/server.js",
     "test": "playwright test",
     "test:coverage": "nyc -r html playwright test"
   },
