@@ -128,12 +128,12 @@ export const STATUS_TEXTS: Record<number, string> = {
 export class Http2Client {
   constructor(
     private readonly baseURL: string | undefined,
-    private extraHTTPHeaders:
+    private extraHTTPHeaders?:
       | {
           [key: string]: string;
         }
       | undefined,
-    private ignoreHTTPSErrors: boolean | undefined,
+    private ignoreHTTPSErrors?: boolean | undefined,
   ) {}
 
   async delete(
@@ -285,7 +285,7 @@ export class Http2Client {
     headers?: Http2Headers,
     data?: Http2Data,
   ): Http2Headers | undefined {
-    const generatedHeaders = { ...headers };
+    const generatedHeaders = { ...this.extraHTTPHeaders, ...headers };
 
     if (data && !headers?.["content-type"]) {
       if (typeof data === "object") {
