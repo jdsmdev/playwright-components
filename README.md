@@ -11,11 +11,13 @@ It also assumes that your web UI under test abliges to the accessibility best pr
 ## Installation
 
 On a project only for testing
+
 ```
 npm i playwright-components
 ```
 
 On project with tests
+
 ```
 npm i -D playwright-components
 ```

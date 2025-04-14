@@ -14,9 +14,15 @@ test("should be able to convert object args into a readable short string", () =>
   expect(argsToString([{}])).toEqual("{}");
   expect(argsToString([{ key: "value" }])).toEqual("{key: value}");
   expect(argsToString([{ key1: 1, key2: 2 }])).toEqual("{key1: 1, ...}");
-  expect(argsToString([{ key1: 1, key2: 2 }, {}])).toEqual("{key1: 1, ...}, ...");
-  expect(argsToString([{ key1: 1, key2: 2 }, {}], 2)).toEqual("{key1: 1, ...}, {}");
-  expect(argsToString([{ key1: 1, key2: 2 }, {}], 2, 2)).toEqual("{key1: 1, key2: 2}, {}");
+  expect(argsToString([{ key1: 1, key2: 2 }, {}])).toEqual(
+    "{key1: 1, ...}, ...",
+  );
+  expect(argsToString([{ key1: 1, key2: 2 }, {}], 2)).toEqual(
+    "{key1: 1, ...}, {}",
+  );
+  expect(argsToString([{ key1: 1, key2: 2 }, {}], 2, 2)).toEqual(
+    "{key1: 1, key2: 2}, {}",
+  );
 });
 
 test("should be able to convert primitive args into a readable short string", () => {
