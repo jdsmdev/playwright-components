@@ -44,14 +44,15 @@ const argToString = (arg: any, maxElems: number): string => {
   }
 
   if (typeof arg === "object") {
-    const keys = Object.keys(arg);
+    const obj = JSON.parse(JSON.stringify(arg));
+    const keys = Object.keys(obj);
 
     if (keys.length === 0) return "{}";
     if (keys.length <= maxElems)
-      return `{${keys.map((k) => `${k}: ${arg[k]}`).join(", ")}}`;
+      return `{${keys.map((k) => `${k}: ${obj[k]}`).join(", ")}}`;
     return `{${keys
       .slice(0, maxElems)
-      .map((k) => `${k}: ${arg[k]}`)
+      .map((k) => `${k}: ${obj[k]}`)
       .join(", ")}, ...}`;
   }
 
