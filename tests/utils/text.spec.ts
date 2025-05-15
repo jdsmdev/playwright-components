@@ -1,13 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { argsToString, toCamelCase, toPhrase } from "../../src";
 
-test("should be able to convert array args into a readable short string", () => {
+test("should be able to convert array args into a readable short string", async ({
+  page,
+}) => {
   expect(argsToString([[]])).toEqual("[]");
   expect(argsToString([[1]])).toEqual("[1]");
   expect(argsToString([[1, 2]])).toEqual("[1, ...]");
   expect(argsToString([[1, 2], []])).toEqual("[1, ...], ...");
   expect(argsToString([[1, 2], []], 2)).toEqual("[1, ...], []");
   expect(argsToString([[1, 2], []], 2, 2)).toEqual("[1, 2], []");
+  expect(argsToString([page])).toEqual("{_type: Page, ...}");
 });
 
 test("should be able to convert object args into a readable short string", () => {
