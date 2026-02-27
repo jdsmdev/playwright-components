@@ -54,6 +54,15 @@ export class TableComponent {
     return this.tableHeader.getByRole("columnheader", { name: text });
   }
 
+  async getColumnHeaders(): Promise<Locator> {
+    const headers = this.tableHeader.getByRole("columnheader", {
+      includeHidden: true,
+    });
+
+    if ((await headers.count()) > 0) return headers;
+    return this.tableHeader.getByRole("cell");
+  }
+
   async sortBy(column: string) {
     await this.getColumnHeader(column).click();
   }
@@ -86,9 +95,9 @@ export class TableComponent {
   }
 
   async getBodyRowsAsMaps(): Promise<Map<string, string>[]> {
-    const columns: string[] = await this.tableHeader
-      .getByRole("columnheader")
-      .allTextContents();
+    const columns: string[] = await (
+      await this.getColumnHeaders()
+    ).allTextContents();
     const cells: string[][] = await this.getBodyCellTexts();
 
     return cells.map((row: string[]) =>
@@ -100,10 +109,9 @@ export class TableComponent {
   }
 
   async getBodyRowsAs<T extends Record<string, string>>(): Promise<T[]> {
-    const columns: string[] = await this.tableHeader
-      .getByRole("columnheader", { includeHidden: true })
-      .allTextContents();
-
+    const columns: string[] = await (
+      await this.getColumnHeaders()
+    ).allTextContents();
     const cells: string[][] = await this.getBodyCellTexts();
 
     const objs: T[] = [];
