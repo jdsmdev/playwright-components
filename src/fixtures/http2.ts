@@ -1,6 +1,7 @@
 import { APIResponse } from "playwright";
 import { connect } from "http2";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Serializable = any;
 type Http2Method =
   | "GET"
