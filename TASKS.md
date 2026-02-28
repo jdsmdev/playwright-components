@@ -1,25 +1,25 @@
-# Backlog de melhorias identificadas
+# Identified Improvement Backlog
 
-## 1) Corrigir erro ortográfico (documentação)
-- **Problema detectado:** o README contém erros de escrita que prejudicam clareza e credibilidade, como `abliges` e `to you web testing`.
-- **Impacto:** confusão para novos utilizadores e documentação menos profissional.
-- **Tarefa proposta:** revisar e corrigir ortografia/gramática no `README.md`, mantendo o sentido original e padronizando inglês técnico.
-- **Critério de aceite:** README sem erros ortográficos evidentes nos parágrafos introdutórios e de instalação.
+## 1) Fix spelling issues (documentation)
+- **Detected issue:** the README contains writing mistakes that hurt clarity and credibility, such as `abliges` and `to you web testing`.
+- **Impact:** confusion for new users and less professional documentation.
+- **Proposed task:** review and fix spelling/grammar in `README.md`, preserving the original intent and standardizing technical English.
+- **Acceptance criteria:** README has no obvious spelling mistakes in the introduction and installation sections.
 
-## 2) Corrigir bug funcional no preenchimento de formulários
-- **Problema detectado:** `fillOne` retorna cedo com `if (!value)`, o que ignora valores válidos como `false`, `0` e string vazia.
-- **Impacto:** não é possível preencher campos booleanos para `false` (quando isolados), números `0` e campos de texto vazios de forma explícita.
-- **Tarefa proposta:** alterar a guarda para ignorar apenas `undefined` (e eventualmente `null`, se a API desejar), preservando o tratamento de `false`, `0` e `""`.
-- **Critério de aceite:** `fillOne("iCanDrive", false)`, `fillOne("age", 0)` e `fillOne("name", "")` executam sem early-return indevido.
+## 2) Fix functional bug in form filling
+- **Detected issue:** `fillOne` returns early with `if (!value)`, which incorrectly skips valid values like `false`, `0`, and an empty string.
+- **Impact:** it is not possible to explicitly fill standalone boolean fields with `false`, numeric fields with `0`, or text inputs with an empty string.
+- **Proposed task:** change the guard to ignore only `undefined` (and optionally `null`, if the API intends to), while preserving handling for `false`, `0`, and `""`.
+- **Acceptance criteria:** `fillOne("iCanDrive", false)`, `fillOne("age", 0)`, and `fillOne("name", "")` execute without an incorrect early return.
 
-## 3) Corrigir comentário de código / discrepância de documentação inline
-- **Problema detectado:** comentários JSDoc em componentes usam termos com erro ortográfico (`acessible`, `insencitive`) e podem induzir uso incorreto.
-- **Impacto:** documentação de API menos confiável para quem usa IntelliSense e lê exemplos.
-- **Tarefa proposta:** revisar JSDoc em `src/components/dialog.ts` e `src/components/table.ts`, corrigindo termos para `accessible` e `insensitive`, além de ajustes menores de redação.
-- **Critério de aceite:** comentários JSDoc sem erros ortográficos nesses arquivos e exemplos coerentes.
+## 3) Fix code comment / inline documentation discrepancy
+- **Detected issue:** JSDoc comments in components use misspelled terms (`acessible`, `insencitive`) that can mislead API users.
+- **Impact:** less reliable API documentation for developers using IntelliSense and examples.
+- **Proposed task:** review JSDoc in `src/components/dialog.ts` and `src/components/table.ts`, correcting terms to `accessible` and `insensitive`, plus minor wording improvements.
+- **Acceptance criteria:** JSDoc comments in those files are free of spelling issues and examples remain coherent.
 
-## 4) Melhorar cobertura de teste para prevenir regressão
-- **Problema detectado:** não há teste que valide explicitamente o cenário `fillOne` com valores falsy (`false`, `0`, `""`).
-- **Impacto:** regressões nesse comportamento podem passar despercebidas.
-- **Tarefa proposta:** adicionar casos em `tests/components/form/form.spec.ts` cobrindo `fillOne` com `false` e `0`; opcionalmente incluir string vazia quando fizer sentido para o HTML de fixture.
-- **Critério de aceite:** novos testes falham antes da correção do bug e passam após ajuste da lógica de guarda.
+## 4) Improve test coverage to prevent regression
+- **Detected issue:** there is no explicit test validating `fillOne` behavior with falsy values (`false`, `0`, `""`).
+- **Impact:** regressions in this behavior may go unnoticed.
+- **Proposed task:** add cases in `tests/components/form/form.spec.ts` covering `fillOne` with `false` and `0`; optionally include empty string where meaningful for the fixture HTML.
+- **Acceptance criteria:** new tests fail before the bug fix and pass after the guard logic is corrected.
