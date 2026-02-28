@@ -1,7 +1,7 @@
 import { Locator, Page } from "playwright";
 
 /**
- * Page component that Represents a dialog.
+ * Page component that represents a dialog.
  *
  * @example
  * ```
@@ -26,6 +26,11 @@ export class DialogComponent {
   readonly actionButton: Locator;
   readonly cancelButton: Locator;
 
+  /**
+   * Creates a dialog component from a page or dialog root locator.
+   *
+   * @param root - The page or locator scoped to the dialog container.
+   */
   constructor(root: Page | Locator) {
     this.page = "page" in root ? root.page() : root;
     this.root = root;
@@ -36,13 +41,13 @@ export class DialogComponent {
   }
 
   /**
-   * Clicks the button in this dialog with the given acessible name.
+   * Clicks the button in this dialog with the given accessible name.
    *
-   * @param name - The acessible name of the button. (case insensitive)
+   * @param name - The accessible name of the button. (case insensitive)
    *
    * @example
    * ```
-   * // clicks the dialog button with acessible name "create".
+   * // clicks the dialog button with accessible name "create".
    * await myDialog.click("create");
    * ```
    */
