@@ -43,7 +43,7 @@ export class TableComponent {
   /**
    * Returns the Locator for a column header.
    *
-   * @param text - The column header text or acessible name. (case insencitive)
+   * @param text - The column header text or accessible name. (case insensitive)
    *
    * @example
    * ```
@@ -70,7 +70,7 @@ export class TableComponent {
   /**
    * Returns the Locator for a table body row.
    *
-   * @param text - The partial row text or acessible name. (case insencitive)
+   * @param text - The partial row text or accessible name. (case insensitive)
    *
    * @example
    * ```

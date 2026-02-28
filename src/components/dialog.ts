@@ -36,13 +36,13 @@ export class DialogComponent {
   }
 
   /**
-   * Clicks the button in this dialog with the given acessible name.
+   * Clicks the button in this dialog with the given accessible name.
    *
-   * @param name - The acessible name of the button. (case insensitive)
+   * @param name - The accessible name of the button. (case insensitive)
    *
    * @example
    * ```
-   * // clicks the dialog button with acessible name "create".
+   * // clicks the dialog button with accessible name "create".
    * await myDialog.click("create");
    * ```
    */
