@@ -147,6 +147,7 @@ export class Http2Client {
 
   /**
    * Sends an HTTP/2 `DELETE` request.
+   * @returns A Playwright-compatible API response wrapper.
    */
   async delete(
     url: string,
@@ -157,6 +158,7 @@ export class Http2Client {
 
   /**
    * Sends an HTTP/2 `GET` request.
+   * @returns A Playwright-compatible API response wrapper.
    */
   async get(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("GET", url, options);
@@ -164,6 +166,7 @@ export class Http2Client {
 
   /**
    * Sends an HTTP/2 `PATCH` request.
+   * @returns A Playwright-compatible API response wrapper.
    */
   async patch(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("PATCH", url, options);
@@ -171,6 +174,7 @@ export class Http2Client {
 
   /**
    * Sends an HTTP/2 `POST` request.
+   * @returns A Playwright-compatible API response wrapper.
    */
   async post(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("POST", url, options);
@@ -178,6 +182,7 @@ export class Http2Client {
 
   /**
    * Sends an HTTP/2 `PUT` request.
+   * @returns A Playwright-compatible API response wrapper.
    */
   async put(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("PUT", url, options);
@@ -185,6 +190,7 @@ export class Http2Client {
 
   /**
    * Sends an HTTP/2 request and adapts the result to the `APIResponse` interface.
+   * @returns A promise that resolves with an object implementing `APIResponse`.
    */
   private request(
     method: Http2Method,
@@ -290,6 +296,7 @@ export class Http2Client {
 
   /**
    * Serializes request data.
+   * @returns A serialized data payload when needed.
    */
   private data(data: Http2Data): Http2Data {
     if (typeof data === "object") {
@@ -301,6 +308,7 @@ export class Http2Client {
 
   /**
    * Resolves base URL and path from either a relative or absolute request URL.
+   * @returns A tuple containing the base URL and request path.
    */
   private getRequestURL(requestUrl: string): [string, string] {
     if (this.baseURL) {
@@ -316,6 +324,7 @@ export class Http2Client {
 
   /**
    * Merges configured headers and applies default content type when needed.
+   * @returns The merged request headers.
    */
   private headers(
     headers?: Http2Headers,
@@ -336,6 +345,7 @@ export class Http2Client {
 
   /**
    * Encodes query params into a query string.
+   * @returns A query string prefixed with `?`, or an empty string when no params are provided.
    */
   private query(params?: Http2Params): string {
     if (!params) {

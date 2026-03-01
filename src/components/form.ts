@@ -46,6 +46,7 @@ export class FormComponent {
    * Fills all form inputs of the given entity.
    *
    * @param entity - An object of any depth with the field: value pairs of the form inputs.
+   * @returns A promise that resolves after all mapped fields are filled.
    *
    * @example
    * ```
@@ -69,6 +70,7 @@ export class FormComponent {
    *
    * @param field - The form field to fill in "camelCaseFormat" or "Phrase Format".
    * @param value - An object of any depth with value to fill in or a field: value pairs of the form inputs.
+   * @returns A promise that resolves after the field is processed.
    *
    * @example
    * ```
@@ -96,6 +98,7 @@ export class FormComponent {
    *
    * @param field - The form field to fill in "camelCaseFormat" or "Phrase Format".
    * @param value - The value to fill.
+   * @returns A promise that resolves after the type-specific filling strategy completes.
    */
   async fillAny(field: string, value: Exclude<FillValue, undefined>) {
     if (typeof value === "boolean") {
@@ -124,6 +127,7 @@ export class FormComponent {
    *
    * @param field - The form field to match.
    * @param value - Whether the checkbox should be checked.
+   * @returns A promise that resolves after the checkbox state is set.
    */
   async fillCheckbox(field: string, value: boolean) {
     await this.root
@@ -136,6 +140,7 @@ export class FormComponent {
    *
    * @param field - The combobox label.
    * @param value - The option text to choose.
+   * @returns A promise that resolves after the option is selected.
    */
   async fillCombobox(field: string, value: string) {
     const labelExp = this.getLabelRegExp(field);
@@ -158,6 +163,7 @@ export class FormComponent {
    *
    * @param field - The file input label.
    * @param value - File paths to upload.
+   * @returns A promise that resolves after files are assigned to the input.
    */
   async fillFile(field: string, value: string[]) {
     await this.getInput(field).setInputFiles(value);
@@ -168,6 +174,7 @@ export class FormComponent {
    *
    * @param field - The input label.
    * @param value - Text or numeric value to enter.
+   * @returns A promise that resolves after the input is filled.
    */
   async fillText(field: string, value: string | number) {
     await this.getInput(field).fill("" + value);
@@ -177,7 +184,7 @@ export class FormComponent {
    * Reads the current validation error message associated with a field.
    *
    * @param field - The input label.
-   * @returns The visible error message or `undefined` when no message is shown.
+   * @returns The visible error message, or `undefined` when no message is shown.
    */
   async getErrorMessage(field: string): Promise<string | undefined> {
     const errorId =
@@ -195,6 +202,7 @@ export class FormComponent {
    * Resolves an input locator using label or placeholder text.
    *
    * @param field - The input label.
+   * @returns The first matching input locator by label or placeholder.
    */
   private getInput(field: string) {
     return this.root
@@ -207,6 +215,7 @@ export class FormComponent {
    * Builds a case-insensitive regex for optional-required labels.
    *
    * @param field - Field name in phrase or camel case.
+   * @returns A case-insensitive label regex that tolerates trailing required markers.
    */
   private getLabelRegExp(field: string) {
     return new RegExp(
@@ -219,6 +228,7 @@ export class FormComponent {
    * Returns option role used by combobox list containers.
    *
    * @param role - Parent options container role.
+   * @returns The child option role used to select an item.
    */
   private optionRoleFor(role: string) {
     if (role === "tree") return "treeitem";

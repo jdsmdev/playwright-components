@@ -49,6 +49,7 @@ export class TableComponent {
    * Returns the locator for a column header.
    *
    * @param text - The column header text or accessible name. (case insensitive)
+   * @returns The matching column header locator.
    */
   getColumnHeader(text: string): Locator {
     return this.tableHeader.getByRole("columnheader", { name: text });
@@ -58,6 +59,7 @@ export class TableComponent {
    * Returns all column header locators.
    *
    * Falls back to `cell` role when `columnheader` is not present.
+   * @returns A locator containing column header cells.
    */
   async getColumnHeaders(): Promise<Locator> {
     const headers = this.tableHeader.getByRole("columnheader", {
@@ -72,6 +74,7 @@ export class TableComponent {
    * Sorts the table by clicking a specific column header.
    *
    * @param column - The column name to sort by.
+   * @returns A promise that resolves after the sort action click is issued.
    */
   async sortBy(column: string) {
     await this.getColumnHeader(column).click();
@@ -81,6 +84,7 @@ export class TableComponent {
    * Returns the locator for a table body row.
    *
    * @param text - The partial row text or accessible name. (case insensitive)
+   * @returns The matching row locator.
    */
   getBodyRow(text: string): Locator {
     return this.page.getByRole("row", { name: text });
@@ -106,6 +110,7 @@ export class TableComponent {
 
   /**
    * Returns body rows as a list of string maps keyed by camel-cased headers.
+   * @returns An array of maps where each map represents one row.
    */
   async getBodyRowsAsMaps(): Promise<Map<string, string>[]> {
     const columns: string[] = await (
@@ -123,6 +128,7 @@ export class TableComponent {
 
   /**
    * Returns body rows as typed objects keyed by camel-cased headers.
+   * @returns An array of typed row objects.
    */
   async getBodyRowsAs<T extends Record<string, string>>(): Promise<T[]> {
     const columns: string[] = await (
@@ -145,6 +151,7 @@ export class TableComponent {
 
   /**
    * Returns the currently selected row count in the rows-per-page control.
+   * @returns The selected number of rows to display per page.
    */
   async howManyRows(): Promise<number> {
     return Number(await this.showHowMany.textContent());
@@ -154,6 +161,7 @@ export class TableComponent {
    * Changes the rows-per-page setting.
    *
    * @param numberOfRows - The number of rows to display.
+   * @returns A promise that resolves after the rows-per-page option is selected.
    */
   async showRows(numberOfRows: number) {
     await this.showHowMany.click();
@@ -165,6 +173,7 @@ export class TableComponent {
 
   /**
    * Returns the current table page number.
+   * @returns The current page number from the paginator input.
    */
   async getCurrentPage(): Promise<number> {
     return Number(await this.currentPage.inputValue());
@@ -172,6 +181,7 @@ export class TableComponent {
 
   /**
    * Returns the "First Page" button.
+   * @returns The locator for the first-page paginator button.
    */
   getFirstPage(): Locator {
     return this.getPageButton("First");
@@ -179,6 +189,7 @@ export class TableComponent {
 
   /**
    * Returns the "Previous Page" button.
+   * @returns The locator for the previous-page paginator button.
    */
   getPrevPage(): Locator {
     return this.getPageButton("Previous");
@@ -186,6 +197,7 @@ export class TableComponent {
 
   /**
    * Returns the "Next Page" button.
+   * @returns The locator for the next-page paginator button.
    */
   getNextPage(): Locator {
     return this.getPageButton("Next");
@@ -193,6 +205,7 @@ export class TableComponent {
 
   /**
    * Returns the "Last Page" button.
+   * @returns The locator for the last-page paginator button.
    */
   getLastPage(): Locator {
     return this.getPageButton("Last");
@@ -200,6 +213,7 @@ export class TableComponent {
 
   /**
    * Navigates to the first page.
+   * @returns A promise that resolves after the first-page button is clicked.
    */
   async goToFirstPage() {
     await this.clickPageButton("First");
@@ -207,6 +221,7 @@ export class TableComponent {
 
   /**
    * Navigates to the previous page.
+   * @returns A promise that resolves after the previous-page button is clicked.
    */
   async goToPrevPage() {
     await this.clickPageButton("Previous");
@@ -214,6 +229,7 @@ export class TableComponent {
 
   /**
    * Navigates to the next page.
+   * @returns A promise that resolves after the next-page button is clicked.
    */
   async goToNextPage() {
     await this.clickPageButton("Next");
@@ -221,6 +237,7 @@ export class TableComponent {
 
   /**
    * Navigates to the last page.
+   * @returns A promise that resolves after the last-page button is clicked.
    */
   async goToLastPage() {
     await this.clickPageButton("Last");
@@ -230,6 +247,7 @@ export class TableComponent {
    * Returns a paginator button by page position label.
    *
    * @param page - Page position name, such as `First` or `Next`.
+   * @returns The locator for the requested paginator button.
    */
   private getPageButton(page: string): Locator {
     return this.page.getByRole("button", { name: `${page} Page` });
@@ -239,6 +257,7 @@ export class TableComponent {
    * Clicks a paginator button by page position label.
    *
    * @param page - Page position name, such as `First` or `Next`.
+   * @returns A promise that resolves after the paginator button is clicked.
    */
   private async clickPageButton(page: string) {
     await this.getPageButton(page).click();

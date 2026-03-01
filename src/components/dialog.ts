@@ -44,6 +44,7 @@ export class DialogComponent {
    * Clicks the button in this dialog with the given accessible name.
    *
    * @param name - The accessible name of the button. (case insensitive)
+   * @returns A promise that resolves after the button is clicked.
    *
    * @example
    * ```
