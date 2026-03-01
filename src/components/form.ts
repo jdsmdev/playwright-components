@@ -6,7 +6,7 @@ export type Entity = { [key: string]: FillValue | Entity };
 export type FillValue = string | string[] | number | boolean | undefined;
 
 /**
- * Page component that Represents a form.
+ * Page component that represents a form.
  *
  * @example
  * ```
@@ -29,6 +29,11 @@ export class FormComponent {
   readonly cancelButton: Locator;
   readonly cancelLink: Locator;
 
+  /**
+   * Creates a form component from a page or form root locator.
+   *
+   * @param root - The page or locator scoped to the form container.
+   */
   constructor(root: Page | Locator) {
     this.page = "page" in root ? root.page() : root;
     this.root = root;
@@ -41,6 +46,7 @@ export class FormComponent {
    * Fills all form inputs of the given entity.
    *
    * @param entity - An object of any depth with the field: value pairs of the form inputs.
+   * @returns A promise that resolves after all mapped fields are filled.
    *
    * @example
    * ```
@@ -64,6 +70,7 @@ export class FormComponent {
    *
    * @param field - The form field to fill in "camelCaseFormat" or "Phrase Format".
    * @param value - An object of any depth with value to fill in or a field: value pairs of the form inputs.
+   * @returns A promise that resolves after the field is processed.
    *
    * @example
    * ```
@@ -86,6 +93,13 @@ export class FormComponent {
       : this.fillAny(field, value));
   }
 
+  /**
+   * Fills one field based on runtime value type.
+   *
+   * @param field - The form field to fill in "camelCaseFormat" or "Phrase Format".
+   * @param value - The value to fill.
+   * @returns A promise that resolves after the type-specific filling strategy completes.
+   */
   async fillAny(field: string, value: Exclude<FillValue, undefined>) {
     if (typeof value === "boolean") {
       await this.fillCheckbox(field, value);
@@ -108,12 +122,26 @@ export class FormComponent {
     }
   }
 
+  /**
+   * Sets a checkbox by its field label.
+   *
+   * @param field - The form field to match.
+   * @param value - Whether the checkbox should be checked.
+   * @returns A promise that resolves after the checkbox state is set.
+   */
   async fillCheckbox(field: string, value: boolean) {
     await this.root
       .getByRole("checkbox", { name: this.getLabelRegExp(field) })
       .setChecked(value);
   }
 
+  /**
+   * Selects a combobox option by visible text.
+   *
+   * @param field - The combobox label.
+   * @param value - The option text to choose.
+   * @returns A promise that resolves after the option is selected.
+   */
   async fillCombobox(field: string, value: string) {
     const labelExp = this.getLabelRegExp(field);
 
@@ -130,14 +158,34 @@ export class FormComponent {
       .click();
   }
 
+  /**
+   * Uploads files to a file input.
+   *
+   * @param field - The file input label.
+   * @param value - File paths to upload.
+   * @returns A promise that resolves after files are assigned to the input.
+   */
   async fillFile(field: string, value: string[]) {
     await this.getInput(field).setInputFiles(value);
   }
 
+  /**
+   * Fills a text-like input.
+   *
+   * @param field - The input label.
+   * @param value - Text or numeric value to enter.
+   * @returns A promise that resolves after the input is filled.
+   */
   async fillText(field: string, value: string | number) {
     await this.getInput(field).fill("" + value);
   }
 
+  /**
+   * Reads the current validation error message associated with a field.
+   *
+   * @param field - The input label.
+   * @returns The visible error message, or `undefined` when no message is shown.
+   */
   async getErrorMessage(field: string): Promise<string | undefined> {
     const errorId =
       await this.getInput(field).getAttribute("aria-errormessage");
@@ -150,6 +198,12 @@ export class FormComponent {
     return (await error.textContent()) || undefined;
   }
 
+  /**
+   * Resolves an input locator using label or placeholder text.
+   *
+   * @param field - The input label.
+   * @returns The first matching input locator by label or placeholder.
+   */
   private getInput(field: string) {
     return this.root
       .getByLabel(this.getLabelRegExp(field))
@@ -157,6 +211,12 @@ export class FormComponent {
       .first();
   }
 
+  /**
+   * Builds a case-insensitive regex for optional-required labels.
+   *
+   * @param field - Field name in phrase or camel case.
+   * @returns A case-insensitive label regex that tolerates trailing required markers.
+   */
   private getLabelRegExp(field: string) {
     return new RegExp(
       `^${field.includes(" ") ? field : toPhrase(field)}\\s*\\*?$`,
@@ -164,6 +224,12 @@ export class FormComponent {
     );
   }
 
+  /**
+   * Returns option role used by combobox list containers.
+   *
+   * @param role - Parent options container role.
+   * @returns The child option role used to select an item.
+   */
   private optionRoleFor(role: string) {
     if (role === "tree") return "treeitem";
     return "option";

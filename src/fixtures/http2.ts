@@ -126,7 +126,15 @@ export const STATUS_TEXTS: Record<number, string> = {
   511: "Network Authentication Required",
 };
 
+/**
+ * Minimal HTTP/2 client that exposes a Playwright-compatible `APIResponse`.
+ */
 export class Http2Client {
+  /**
+   * @param baseURL - Base URL used when request paths are relative.
+   * @param extraHTTPHeaders - Default headers merged into every request.
+   * @param ignoreHTTPSErrors - Whether TLS certificate errors should be ignored.
+   */
   constructor(
     private readonly baseURL: string | undefined,
     private extraHTTPHeaders?:
@@ -137,6 +145,10 @@ export class Http2Client {
     private ignoreHTTPSErrors?: boolean | undefined,
   ) {}
 
+  /**
+   * Sends an HTTP/2 `DELETE` request.
+   * @returns A Playwright-compatible API response wrapper.
+   */
   async delete(
     url: string,
     options?: Http2ClientOptions,
@@ -144,22 +156,42 @@ export class Http2Client {
     return this.request("DELETE", url, options);
   }
 
+  /**
+   * Sends an HTTP/2 `GET` request.
+   * @returns A Playwright-compatible API response wrapper.
+   */
   async get(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("GET", url, options);
   }
 
+  /**
+   * Sends an HTTP/2 `PATCH` request.
+   * @returns A Playwright-compatible API response wrapper.
+   */
   async patch(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("PATCH", url, options);
   }
 
+  /**
+   * Sends an HTTP/2 `POST` request.
+   * @returns A Playwright-compatible API response wrapper.
+   */
   async post(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("POST", url, options);
   }
 
+  /**
+   * Sends an HTTP/2 `PUT` request.
+   * @returns A Playwright-compatible API response wrapper.
+   */
   async put(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("PUT", url, options);
   }
 
+  /**
+   * Sends an HTTP/2 request and adapts the result to the `APIResponse` interface.
+   * @returns A promise that resolves with an object implementing `APIResponse`.
+   */
   private request(
     method: Http2Method,
     url: string,
@@ -262,6 +294,10 @@ export class Http2Client {
     });
   }
 
+  /**
+   * Serializes request data.
+   * @returns A serialized data payload when needed.
+   */
   private data(data: Http2Data): Http2Data {
     if (typeof data === "object") {
       return JSON.stringify(data);
@@ -270,6 +306,10 @@ export class Http2Client {
     return data;
   }
 
+  /**
+   * Resolves base URL and path from either a relative or absolute request URL.
+   * @returns A tuple containing the base URL and request path.
+   */
   private getRequestURL(requestUrl: string): [string, string] {
     if (this.baseURL) {
       return [this.baseURL, requestUrl];
@@ -282,6 +322,10 @@ export class Http2Client {
     return [base, path];
   }
 
+  /**
+   * Merges configured headers and applies default content type when needed.
+   * @returns The merged request headers.
+   */
   private headers(
     headers?: Http2Headers,
     data?: Http2Data,
@@ -299,6 +343,10 @@ export class Http2Client {
     return generatedHeaders;
   }
 
+  /**
+   * Encodes query params into a query string.
+   * @returns A query string prefixed with `?`, or an empty string when no params are provided.
+   */
   private query(params?: Http2Params): string {
     if (!params) {
       return "";
