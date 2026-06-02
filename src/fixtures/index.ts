@@ -2,8 +2,14 @@ import { Http2Client } from "./http2";
 
 export * from "./http2";
 
+/**
+ * Additional Playwright fixture types provided by this package.
+ */
 export type Fixtures = { http2: Http2Client };
 
+/**
+ * Additional Playwright fixtures that can be merged into `test.extend(...)`.
+ */
 export const fixtures = {
   http2: async (
     {
