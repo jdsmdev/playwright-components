@@ -77,7 +77,7 @@ export class FormComponent {
    * ```
    */
   async fillOne(field: string, value?: FillValue | Entity) {
-    if (!value) {
+    if (value === undefined) {
       return;
     }
 
