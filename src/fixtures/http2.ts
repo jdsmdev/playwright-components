@@ -126,7 +126,17 @@ export const STATUS_TEXTS: Record<number, string> = {
   511: "Network Authentication Required",
 };
 
+/**
+ * Lightweight HTTP/2 client fixture with a Playwright-like response shape.
+ */
 export class Http2Client {
+  /**
+   * Creates an HTTP/2 client bound to an optional base URL.
+   *
+   * @param baseURL - Base URL used when request URLs are provided as paths.
+   * @param extraHTTPHeaders - Default headers sent with every request.
+   * @param ignoreHTTPSErrors - Whether TLS certificate errors are ignored.
+   */
   constructor(
     private readonly baseURL: string | undefined,
     private extraHTTPHeaders?:
@@ -137,6 +147,12 @@ export class Http2Client {
     private ignoreHTTPSErrors?: boolean | undefined,
   ) {}
 
+  /**
+   * Sends a `DELETE` request.
+   *
+   * @param url - Absolute URL or path.
+   * @param options - Request options.
+   */
   async delete(
     url: string,
     options?: Http2ClientOptions,
@@ -144,18 +160,42 @@ export class Http2Client {
     return this.request("DELETE", url, options);
   }
 
+  /**
+   * Sends a `GET` request.
+   *
+   * @param url - Absolute URL or path.
+   * @param options - Request options.
+   */
   async get(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("GET", url, options);
   }
 
+  /**
+   * Sends a `PATCH` request.
+   *
+   * @param url - Absolute URL or path.
+   * @param options - Request options.
+   */
   async patch(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("PATCH", url, options);
   }
 
+  /**
+   * Sends a `POST` request.
+   *
+   * @param url - Absolute URL or path.
+   * @param options - Request options.
+   */
   async post(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("POST", url, options);
   }
 
+  /**
+   * Sends a `PUT` request.
+   *
+   * @param url - Absolute URL or path.
+   * @param options - Request options.
+   */
   async put(url: string, options?: Http2ClientOptions): Promise<APIResponse> {
     return this.request("PUT", url, options);
   }

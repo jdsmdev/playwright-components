@@ -86,6 +86,23 @@ export class FormComponent {
       : this.fillAny(field, value));
   }
 
+  /**
+   * Figures out the type of input and fills it accordingly.
+   *
+   * @param field - The form field to fill in "camelCaseFormat" or "Phrase Format".
+   * @param value - A value to fill in. Check FillValue for supported types.
+   *
+   * @example
+   * ```
+   * // fills "Name" text input.
+   * await myForm.fillAny("name", "Angie");
+   * ```
+   * @example
+   * ```
+   * // fills "Has Driver License" checkbox input.
+   * await myForm.fillAny("hasDriverLicense", true);
+   * ```
+   */
   async fillAny(field: string, value: Exclude<FillValue, undefined>) {
     if (typeof value === "boolean") {
       await this.fillCheckbox(field, value);
@@ -108,12 +125,24 @@ export class FormComponent {
     }
   }
 
+  /**
+   * Checks or unchecks a checkbox input by label.
+   *
+   * @param field - The checkbox label in "camelCaseFormat" or "Phrase Format".
+   * @param value - `true` to check, `false` to uncheck.
+   */
   async fillCheckbox(field: string, value: boolean) {
     await this.root
       .getByRole("checkbox", { name: this.getLabelRegExp(field) })
       .setChecked(value);
   }
 
+  /**
+   * Selects a value from a combobox input by label.
+   *
+   * @param field - The combobox label in "camelCaseFormat" or "Phrase Format".
+   * @param value - The option text to select.
+   */
   async fillCombobox(field: string, value: string) {
     const labelExp = this.getLabelRegExp(field);
 
@@ -130,14 +159,32 @@ export class FormComponent {
       .click();
   }
 
+  /**
+   * Uploads one or more files into a file input by label.
+   *
+   * @param field - The file input label in "camelCaseFormat" or "Phrase Format".
+   * @param value - Absolute or relative file paths to upload.
+   */
   async fillFile(field: string, value: string[]) {
     await this.getInput(field).setInputFiles(value);
   }
 
+  /**
+   * Fills a text-like input by label.
+   *
+   * @param field - The input label in "camelCaseFormat" or "Phrase Format".
+   * @param value - The string or number value to type.
+   */
   async fillText(field: string, value: string | number) {
     await this.getInput(field).fill("" + value);
   }
 
+  /**
+   * Returns the visible validation message for a field, if present.
+   *
+   * @param field - The input label in "camelCaseFormat" or "Phrase Format".
+   * @returns The error text, or `undefined` when no visible message exists.
+   */
   async getErrorMessage(field: string): Promise<string | undefined> {
     const errorId =
       await this.getInput(field).getAttribute("aria-errormessage");
