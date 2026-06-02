@@ -44,6 +44,42 @@ test("should be able to fill checkbox input on form", async ({ formPage }) => {
   await expect(formPage.form.root.getByLabel("I Can Drive")).toBeChecked();
 });
 
+test("should be able to fill checkbox input with false on form", async ({
+  formPage,
+}) => {
+  // GIVEN
+  await formPage.form.root.getByLabel("I Can Drive").check();
+
+  // WHEN
+  await formPage.form.fillOne("iCanDrive", false);
+
+  // THEN
+  await expect(formPage.form.root.getByLabel("I Can Drive")).not.toBeChecked();
+});
+
+test("should be able to fill number input with 0 on form", async ({
+  formPage,
+}) => {
+  // WHEN
+  await formPage.form.fillOne("age", 0);
+
+  // THEN
+  await expect(formPage.form.root.getByLabel("age")).toHaveValue("0");
+});
+
+test("should be able to fill text input with empty string on form", async ({
+  formPage,
+}) => {
+  // GIVEN
+  await formPage.form.root.getByLabel("name").fill("angie");
+
+  // WHEN
+  await formPage.form.fillOne("name", "");
+
+  // THEN
+  await expect(formPage.form.root.getByLabel("name")).toHaveValue("");
+});
+
 test("should be able to fill checkbox input with phrase on form", async ({
   formPage,
 }) => {
