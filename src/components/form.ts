@@ -197,21 +197,21 @@ export class FormComponent {
     return (await error.textContent()) || undefined;
   }
 
-  private getInput(field: string) {
+  getInput(field: string) {
     return this.root
       .getByLabel(this.getLabelRegExp(field))
       .or(this.root.getByPlaceholder(this.getLabelRegExp(field)))
       .first();
   }
 
-  private getLabelRegExp(field: string) {
+  getLabelRegExp(field: string) {
     return new RegExp(
       `^${field.includes(" ") ? field : toPhrase(field)}\\s*\\*?$`,
       "i",
     );
   }
 
-  private optionRoleFor(role: string) {
+  optionRoleFor(role: string) {
     if (role === "tree") return "treeitem";
     return "option";
   }
