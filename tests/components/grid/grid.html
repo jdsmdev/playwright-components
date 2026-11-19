@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <div role="grid" aria-label="People grid">
+      <div role="rowgroup">
+        <div role="row">
+          <div role="columnheader">Header 1</div>
+          <div role="columnheader">Header 2</div>
+          <div role="columnheader">Header 3</div>
+        </div>
+      </div>
+      <div role="rowgroup">
+        <div role="row">
+          <div role="gridcell">Row 1, Cell 1</div>
+          <div role="gridcell">Row 1, Cell 2</div>
+          <div role="gridcell">Row 1, Cell 3</div>
+        </div>
+        <div role="row">
+          <div role="gridcell">Row 2, Cell 1</div>
+          <div role="gridcell">Row 2, Cell 2</div>
+          <div role="gridcell">Row 2, Cell 3</div>
+        </div>
+        <div role="row">
+          <div role="gridcell">Row 3, Cell 1</div>
+          <div role="gridcell">Row 3, Cell 2</div>
+          <div role="gridcell">Row 3, Cell 3</div>
+        </div>
+      </div>
+    </div>
+
+    <label for="page-size">Page size</label>
+    <select id="page-size">
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+    </select>
+
+    <button aria-label="First page">First</button>
+    <button aria-label="Previous page">Previous</button>
+    <button aria-label="Next page">Next</button>
+    <button aria-label="Last page">Last</button>
+    <input aria-label="Current page" role="spinbutton" value="1" />
+  </body>
+</html>
