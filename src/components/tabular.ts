@@ -99,17 +99,29 @@ export abstract class TabularComponent {
 
   /**
    * Returns body rows as maps keyed by camel-cased column headers.
+   *
+   * If the component does not render header cells, pass the headers explicitly.
+   * Supplied headers must match the rendered cell order exactly. Empty header names
+   * are ignored, and missing or extra cells are mapped as an empty string or ignored.
+   *
+   * @param headers - Optional ordered headers. When omitted, headers are discovered
+   * from the rendered component.
    * @returns A list of maps containing trimmed cell values.
+   * @remarks Only currently rendered rows and cells are returned. Virtualized grids
+   * may therefore require pagination or virtualization to be disabled for complete data.
    * @example
    * ```ts
-   * const rows = await component.getBodyRowsAsMaps();
+   * // Headerless table or grid
+   * const rows = await component.getBodyRowsAsMaps(["First Name", "Last Name"]);
    * const firstName = rows[0].get("firstName");
    * ```
    */
-  async getBodyRowsAsMaps(): Promise<Map<string, string>[]> {
-    const columns: string[] = await (
-      await this.getColumnHeaders()
-    ).allTextContents();
+  async getBodyRowsAsMaps(
+    headers?: readonly string[],
+  ): Promise<Map<string, string>[]> {
+    const columns: string[] = headers
+      ? [...headers]
+      : await (await this.getColumnHeaders()).allTextContents();
     const cells: string[][] = await this.getBodyCellTexts();
 
     return cells.map((row: string[]) =>
@@ -123,18 +135,31 @@ export abstract class TabularComponent {
 
   /**
    * Returns body rows as typed objects keyed by camel-cased column headers.
+   *
+   * If the component does not render header cells, pass the headers explicitly.
+   * Supplied headers must match the rendered cell order exactly. Empty header names
+   * are ignored, and missing or extra cells are mapped as an empty string or ignored.
+   *
+   * @param headers - Optional ordered headers. When omitted, headers are discovered
+   * from the rendered component.
    * @typeParam T - The expected row shape.
    * @returns A list of typed objects containing trimmed cell values.
+   * @remarks Only currently rendered rows and cells are returned. Virtualized grids
+   * may therefore require pagination or virtualization to be disabled for complete data.
    * @example
    * ```ts
    * type User = { firstName: string; lastName: string };
-   * const users = await component.getBodyRowsAs<User>();
+   *
+   * // Headerless table or grid
+   * const users = await component.getBodyRowsAs<User>(["First Name", "Last Name"]);
    * ```
    */
-  async getBodyRowsAs<T extends Record<string, string>>(): Promise<T[]> {
-    const columns: string[] = await (
-      await this.getColumnHeaders()
-    ).allTextContents();
+  async getBodyRowsAs<T extends Record<string, string>>(
+    headers?: readonly string[],
+  ): Promise<T[]> {
+    const columns: string[] = headers
+      ? [...headers]
+      : await (await this.getColumnHeaders()).allTextContents();
     const cells: string[][] = await this.getBodyCellTexts();
 
     return cells.map((row: string[]) => {

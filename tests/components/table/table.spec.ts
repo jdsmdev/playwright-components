@@ -44,6 +44,30 @@ test("should be able to get body rows as maps on table", async ({
   expect(rows[2].get("header3")).toBe("Row 3, Cell 3");
 });
 
+test("should map body rows with supplied headers", async ({ tablePage }) => {
+  const rows = await tablePage.table.getBodyRowsAsMaps([
+    "Name",
+    "Age",
+    "Location",
+  ]);
+
+  expect(rows).toHaveLength(3);
+  expect(rows[1].get("age")).toBe("Row 2, Cell 2");
+});
+
+test("should map typed body rows with supplied headers", async ({
+  tablePage,
+}) => {
+  const rows = await tablePage.table.getBodyRowsAs<{
+    name: string;
+    age: string;
+    location: string;
+  }>(["Name", "Age", "Location"]);
+
+  expect(rows).toHaveLength(3);
+  expect(rows[2].location).toBe("Row 3, Cell 3");
+});
+
 test("should be able to get body rows as any record on table", async ({
   tablePage,
 }) => {
