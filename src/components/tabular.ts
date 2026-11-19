@@ -56,12 +56,56 @@ export abstract class TabularComponent {
       this.page.getByRole("button", { name: /^(last page|last)$/i });
   }
 
+  /**
+   * Returns the locator for a column header by text or accessible name.
+   * @param text - Header text or accessible name to find.
+   * @returns A locator for the matching column header.
+   */
   abstract getColumnHeader(text: string): Locator;
+
+  /**
+   * Returns the locator for all currently rendered column headers.
+   * @returns A locator containing the ordered column headers.
+   */
   abstract getColumnHeaders(): Promise<Locator>;
+
+  /**
+   * Sorts the tabular data by a named column.
+   * @param column - Column text or accessible name.
+   * @example
+   * ```ts
+   * await component.sortBy("Name");
+   * ```
+   */
   abstract sortBy(column: string): Promise<void>;
+
+  /**
+   * Returns a body row containing the supplied text or accessible name.
+   * @param text - Text or accessible name that identifies the row.
+   * @returns A locator for the matching body row.
+   * @example
+   * ```ts
+   * await expect(component.getBodyRow("Jane Doe")).toBeVisible();
+   * ```
+   */
   abstract getBodyRow(text: string): Locator;
+
+  /**
+   * Returns body cells as a two-dimensional matrix of trimmed text values.
+   * @returns Each inner array represents one currently rendered body row.
+   * @remarks Virtualized grids return only rows and cells rendered in the DOM.
+   */
   abstract getBodyCellTexts(): Promise<string[][]>;
 
+  /**
+   * Returns body rows as maps keyed by camel-cased column headers.
+   * @returns A list of maps containing trimmed cell values.
+   * @example
+   * ```ts
+   * const rows = await component.getBodyRowsAsMaps();
+   * const firstName = rows[0].get("firstName");
+   * ```
+   */
   async getBodyRowsAsMaps(): Promise<Map<string, string>[]> {
     const columns: string[] = await (
       await this.getColumnHeaders()
@@ -77,6 +121,16 @@ export abstract class TabularComponent {
     );
   }
 
+  /**
+   * Returns body rows as typed objects keyed by camel-cased column headers.
+   * @typeParam T - The expected row shape.
+   * @returns A list of typed objects containing trimmed cell values.
+   * @example
+   * ```ts
+   * type User = { firstName: string; lastName: string };
+   * const users = await component.getBodyRowsAs<User>();
+   * ```
+   */
   async getBodyRowsAs<T extends Record<string, string>>(): Promise<T[]> {
     const columns: string[] = await (
       await this.getColumnHeaders()
@@ -93,6 +147,14 @@ export abstract class TabularComponent {
     });
   }
 
+  /**
+   * Returns how many rows are configured to display per page.
+   * @returns The configured page-size value as a number.
+   * @example
+   * ```ts
+   * expect(await component.howManyRows()).toBe(25);
+   * ```
+   */
   async howManyRows(): Promise<number> {
     const input = await this.showHowMany.inputValue().catch(() => null);
     if (input !== null) return Number(input);
@@ -101,6 +163,14 @@ export abstract class TabularComponent {
     return Number(text?.trim() ?? 0);
   }
 
+  /**
+   * Sets how many rows should be displayed per page.
+   * @param numberOfRows - Page size to select.
+   * @example
+   * ```ts
+   * await component.showRows(25);
+   * ```
+   */
   async showRows(numberOfRows: number): Promise<void> {
     const isSelect = await this.showHowMany
       .evaluate((element) => element instanceof HTMLSelectElement)
@@ -127,6 +197,14 @@ export abstract class TabularComponent {
     await option.click();
   }
 
+  /**
+   * Returns the currently selected page number.
+   * @returns The current page number.
+   * @example
+   * ```ts
+   * expect(await component.getCurrentPage()).toBe(3);
+   * ```
+   */
   async getCurrentPage(): Promise<number> {
     const input = await this.currentPage.inputValue().catch(() => null);
     if (input !== null) return Number(input);
@@ -135,34 +213,42 @@ export abstract class TabularComponent {
     return Number(text?.trim() ?? 0);
   }
 
+  /** Returns the locator for the first-page navigation control. */
   getFirstPage(): Locator {
     return this.firstPageLocator;
   }
 
+  /** Returns the locator for the previous-page navigation control. */
   getPrevPage(): Locator {
     return this.previousPageLocator;
   }
 
+  /** Returns the locator for the next-page navigation control. */
   getNextPage(): Locator {
     return this.nextPageLocator;
   }
 
+  /** Returns the locator for the last-page navigation control. */
   getLastPage(): Locator {
     return this.lastPageLocator;
   }
 
+  /** Clicks the first-page navigation control. */
   async goToFirstPage(): Promise<void> {
     await this.firstPageLocator.click();
   }
 
+  /** Clicks the previous-page navigation control. */
   async goToPrevPage(): Promise<void> {
     await this.previousPageLocator.click();
   }
 
+  /** Clicks the next-page navigation control. */
   async goToNextPage(): Promise<void> {
     await this.nextPageLocator.click();
   }
 
+  /** Clicks the last-page navigation control. */
   async goToLastPage(): Promise<void> {
     await this.lastPageLocator.click();
   }
